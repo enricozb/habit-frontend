@@ -1,18 +1,39 @@
 import React from "react";
 import axios from "axios";
-import useSWR from "swr";
+import useSWR, { mutate }  from "swr";
 
 import { AddHabit } from "./AddHabit";
 
-export function HabitList() {
-  // const { data, error } = useSWR("localhost:9000/api/task", axios);
+type HabitJSON = {
+  email: string;
+  name: string;
+  completeDate: Date;
+  remindTime: string;
+};
 
-  const data = [
-    { name: "Cook", time: "11:00", completed: false },
-    { name: "Read", time: "20:00", completed: false },
-    { name: "Exercise", time: "08:30", completed: false },
-  ];
-  data.sort((habit1, habit2) => habit1.time.localeCompare(habit2.time));
+type HabitSWR = {
+  data?: HabitJSON[];
+  error?: any;
+};
+
+export function HabitList() {
+  const { data, error }: HabitSWR = useSWR("habit", (url) => (
+    axios.get(url, {withCredentials: true}).then((res) => res.data)
+  ));
+
+  if (data === undefined) {
+    return <div>Loading...</div>;
+  } else {
+    data.sort((habit1: any, habit2: any) =>
+      habit1.time.localeCompare(habit2.time)
+    );
+  }
+
+  console.log("data:", data);
+
+  if (error !== undefined) {
+    return <div>Error...</div>;
+  }
 
   const completeHabit = (name: string) => {};
 
@@ -21,11 +42,11 @@ export function HabitList() {
       <div>Habits</div>
       <AddHabit />
       <div className="habit-list">
-        {data.map(({ name, time, completed }, i) => (
-          <li key={i} className={completed ? "completed" : ""}>
+        {data.map(({ name, remindTime }, i) => (
+          <li key={i}>
             <button onClick={() => completeHabit(name)}>-</button>
             <span>{name}</span>
-            <span>{time}</span>
+            <span>{remindTime}</span>
           </li>
         ))}
       </div>
