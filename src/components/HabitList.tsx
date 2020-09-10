@@ -1,35 +1,23 @@
 import React from "react";
 import axios from "axios";
-import useSWR, { mutate }  from "swr";
+import useSWR, { mutate } from "swr";
 
 import { AddHabit } from "./AddHabit";
 
-type HabitJSON = {
-  email: string;
-  name: string;
-  completeDate: Date;
-  remindTime: string;
-};
-
-type HabitSWR = {
-  data?: HabitJSON[];
-  error?: any;
-};
+import { HabitSWR, HabitJSON } from "../types";
 
 export function HabitList() {
-  const { data, error }: HabitSWR = useSWR("habit", (url) => (
-    axios.get(url, {withCredentials: true}).then((res) => res.data)
-  ));
+  const { data, error }: HabitSWR = useSWR("habit", (url) =>
+    axios.get(url, { withCredentials: true }).then((res) => res.data)
+  );
 
   if (data === undefined) {
     return <div>Loading...</div>;
   } else {
-    data.sort((habit1: any, habit2: any) =>
-      habit1.time.localeCompare(habit2.time)
+    data.sort((habit1: HabitJSON, habit2: HabitJSON) =>
+      habit1.remindTime.localeCompare(habit2.remindTime)
     );
   }
-
-  console.log("data:", data);
 
   if (error !== undefined) {
     return <div>Error...</div>;
