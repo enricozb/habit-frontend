@@ -6,12 +6,13 @@ import { HabitSWR, HabitJSON } from "../types";
 
 export function Stats() {
   // let habitStats: [{name?: string; dates?: Array<string>}]  = [{}]
+  const {habitName} = useParams()
+
   let habitStats: { [name: string]: Array<string>} = { }
 
   const { data, error }: HabitSWR = useSWR("http://localhost:3000/habit", (url) =>
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
-
 
   if (data === undefined) {
     return <div>Loading...</div>;
@@ -35,6 +36,7 @@ export function Stats() {
 
 
   // data -> {habitName: [date1.slice(0, 10), date2, date3, ...]
+  
 
-  return <div>stats for {JSON.stringify(data)}</div>;
+  return <div>{JSON.stringify(habitStats[habitName])}</div>;
 }
