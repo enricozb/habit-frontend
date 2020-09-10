@@ -16,7 +16,7 @@ function App() {
       password: "lmaoplsdon'thack",
     };
 
-    axios.post("user/login", data).then((res) => setLoading(false))
+    axios.post("http://localhost:3000/user/login", data).then((res) => setLoading(false))
   }, []);
 
   if (loading) {
@@ -26,7 +26,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/stats">
+        <Route path="/stats/:habitName">
           <Stats />
         </Route>
         <Route path="/">

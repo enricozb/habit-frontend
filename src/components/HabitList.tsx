@@ -15,14 +15,14 @@ export function HabitList() {
 
   if (data === undefined) {
     return <div>Loading...</div>;
-  } else {
-    for (const habit of data) {
-      habits[habit.name] = { time: habit.remindTime };
-    }
   }
 
   if (error !== undefined) {
     return <div>Error...</div>;
+  }
+
+  for (const habit of data) {
+    habits[habit.name] = { time: habit.remindTime };
   }
 
   const completeHabit = async (name: string) => {
@@ -63,6 +63,7 @@ export function HabitList() {
         {sortedHabits().map(({ name, time }, i) => (
           <li key={i}>
             <button onClick={async () => await completeHabit(name)}>-</button>
+            <a href={`stats/${name}`}>stats</a>
             <span>{name}</span>
             <span>{time}</span>
           </li>
