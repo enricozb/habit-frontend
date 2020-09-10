@@ -11,30 +11,60 @@ export function HabitList() {
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
 
+  const habits: Record<string, Record<string, string>> = {};
+
   if (data === undefined) {
     return <div>Loading...</div>;
   } else {
-    data.sort((habit1: HabitJSON, habit2: HabitJSON) =>
-      habit1.remindTime.localeCompare(habit2.remindTime)
-    );
+    for (const habit of data) {
+      habits[habit.name] = { time: habit.remindTime };
+    }
   }
 
   if (error !== undefined) {
     return <div>Error...</div>;
   }
 
-  const completeHabit = (name: string) => {};
+  const completeHabit = async (name: string) => {
+    const habitEntry = {
+      email: "ab@gmail.com",
+      name,
+      completeDate: new Date(),
+      remindTime: habits[name].time,
+    };
+
+    if (data === undefined) {
+      return;
+    }
+
+    mutate("habit", [...data, habitEntry], false);
+
+    await axios.post("habit", habitEntry);
+
+    mutate("habit");
+  };
+
+  const sortedHabits = () => {
+    const habitsArray = Object.entries(habits).map(([name, { time }]) => ({
+      name,
+      time,
+    }));
+    habitsArray.sort((habit1: any, habit2: any) =>
+      habit1.time.localeCompare(habit2.time)
+    );
+    return habitsArray;
+  };
 
   return (
     <>
       <div>Habits</div>
       <AddHabit />
       <div className="habit-list">
-        {data.map(({ name, remindTime }, i) => (
+        {sortedHabits().map(({ name, time }, i) => (
           <li key={i}>
-            <button onClick={() => completeHabit(name)}>-</button>
+            <button onClick={async () => await completeHabit(name)}>-</button>
             <span>{name}</span>
-            <span>{remindTime}</span>
+            <span>{time}</span>
           </li>
         ))}
       </div>

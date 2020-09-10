@@ -12,7 +12,7 @@ export function AddHabit() {
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
 
-  const submit = async () => {
+  const addHabit = async () => {
     const habitEntry = {
       email: "ab@gmail.com",
       name,
@@ -26,10 +26,7 @@ export function AddHabit() {
 
     mutate("habit", [...data, habitEntry], false);
 
-    await axios.post(
-      "habit",
-      habitEntry
-    );
+    await axios.post("habit", habitEntry);
 
     mutate("habit");
   };
@@ -52,7 +49,7 @@ export function AddHabit() {
           }}
         />
       </label>
-      <button onClick={submit}>+</button>
+      <button onClick={addHabit}>+</button>
     </div>
   );
 }
