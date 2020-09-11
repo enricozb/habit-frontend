@@ -5,23 +5,22 @@ import useSWR, { mutate } from "swr";
 import { HabitSWR, HabitJSON } from "../types";
 
 export function Stats() {
-  // let habitStats: [{name?: string; dates?: Array<string>}]  = [{}]
   const {habitName} = useParams()
-
   let habitStats: { [name: string]: Array<string>} = { }
-
   const { data, error }: HabitSWR = useSWR("http://localhost:3000/habit", (url) =>
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
-
-  if (data === undefined) {
+  if (!data) {
     return <div>Loading...</div>;
   }
-
-  if (error !== undefined) {
+  if (error) {
     return <div>Error...</div>;
   }
-
+  // create useStats hook
+  // put this in useStats hook and return the transformed data
+  // useStats instead of useSWR
+  // sstore result of transformation with useState inside the useStats hook
+  // https://swr.vercel.app/getting-started
   for (const key of data) {
     if (!(key.name in habitStats)) {
       var arr = [];
@@ -32,11 +31,10 @@ export function Stats() {
     }
   }
 
+  habitStats[habitName].sort()
+
   console.log(JSON.stringify(habitStats))
-
-
-  // data -> {habitName: [date1.slice(0, 10), date2, date3, ...]
-  
-
-  return <div>{JSON.stringify(habitStats[habitName])}</div>;
+  return <div>
+    {JSON.stringify(habitStats[habitName])}
+    </div>;
 }
