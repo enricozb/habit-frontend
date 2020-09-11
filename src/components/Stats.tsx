@@ -10,7 +10,7 @@ export function Stats() {
 
   let habitStats: { [name: string]: Array<string>} = { }
 
-  const { data, error }: HabitSWR = useSWR("http://localhost:3000/habit", (url) =>
+  const { data, error }: HabitSWR = useSWR("/habit", (url) =>
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
 
