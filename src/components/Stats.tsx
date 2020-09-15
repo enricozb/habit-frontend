@@ -7,6 +7,7 @@ import { HabitSWR, HabitJSON } from "../types";
 export function Stats() {
   const {habitName} = useParams()
   let habitStats: { [name: string]: Array<string>} = { }
+  let fuckMe: { [habitDate: string]: number} = { }
   const { data, error }: HabitSWR = useSWR("http://localhost:3000/habit", (url) =>
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
@@ -33,8 +34,15 @@ export function Stats() {
 
   habitStats[habitName].sort()
 
-  console.log(JSON.stringify(habitStats))
+  for (const index in habitStats[habitName]) {
+    if (!(habitStats[habitName][index] in fuckMe)) {
+      fuckMe[habitStats[habitName][index]] = 1
+    } else {
+      fuckMe[habitStats[habitName][index]] ++
+    }
+  }
+
   return <div>
-    {JSON.stringify(habitStats[habitName])}
+    {JSON.stringify(fuckMe)}
     </div>;
 }
