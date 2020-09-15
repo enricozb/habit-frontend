@@ -42,7 +42,16 @@ export function Stats() {
     }
   }
 
+  console.log(fuckMe)
   return <div>
-    {JSON.stringify(fuckMe)}
+    <div className="habit-stats">
+    {
+      Object.entries(fuckMe).map(([key, val], i) => (
+        <p>
+          <span>Date: {key} Completed: {val}</span>
+        </p>
+      ))
+    }
+    </div>
     </div>;
 }
