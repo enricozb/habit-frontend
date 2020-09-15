@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import useSWR, { mutate } from "swr";
-import { HabitSWR, HabitJSON } from "../types";
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import { useParams } from "react-router-dom"
+import useSWR, { mutate } from "swr"
+import { HabitSWR, HabitJSON } from "../types"
 
 export function Stats() {
   const { habitName } = useParams()
@@ -61,6 +61,7 @@ export function Stats() {
     </div>
   </div>
 }
+
 
 
 
