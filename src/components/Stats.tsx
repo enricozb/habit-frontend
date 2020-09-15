@@ -17,7 +17,7 @@ export function Stats() {
       return
     for (const key of data) {
       if (!(key.name in habitStats)) {
-        var arr = [];
+        const arr = [];
         arr.push(key.completeDate.toString().slice(0, 10))
         habitStats[key.name] = arr
       } else {
