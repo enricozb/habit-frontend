@@ -48,7 +48,13 @@ export function Stats() {
     {
       Object.entries(fuckMe).map(([key, val], i) => (
         <p>
-          <span>Date: {key} Completed: {val}</span>
+          <span>Date: {key} </span>
+          <span>
+            Completed: 
+          </span>
+          {[...Array(val)].map((e, k) => 
+            <span className="points" key={k}>+</span>
+          )}
         </p>
       ))
     }
