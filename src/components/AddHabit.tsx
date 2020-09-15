@@ -8,7 +8,7 @@ export function AddHabit() {
   const [name, setName] = useState("");
   const [time, setTime] = useState("");
 
-  const { data, error }: HabitSWR = useSWR("habit", (url) =>
+  const { data, error }: HabitSWR = useSWR("/habit", (url) =>
     axios.get(url, { withCredentials: true }).then((res) => res.data)
   );
 
@@ -24,11 +24,11 @@ export function AddHabit() {
       return;
     }
 
-    mutate("habit", [...data, habitEntry], false);
+    mutate("/habit", [...data, habitEntry], false);
 
-    await axios.post("habit", habitEntry);
+    await axios.post("/habit", habitEntry);
 
-    mutate("habit");
+    mutate("/habit");
   };
 
   return (

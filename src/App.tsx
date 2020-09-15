@@ -16,7 +16,7 @@ function App() {
       password: "lmaoplsdon'thack",
     };
 
-    axios.post("http://localhost:3000/user/login", data).then((res) => setLoading(false))
+    axios.post("/user/login", data).then((res) => setLoading(false))
   }, []);
 
   if (loading) {
